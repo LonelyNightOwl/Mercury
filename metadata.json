@@ -1,0 +1,6 @@
+{
+  "name": "MERCURY - AI Merchant Intelligence & Action Platform",
+  "description": "One AI operating layer for a merchant's money. Unified AI command centre for online merchants to monitor revenue, recover lost payments, mitigate risk, reconcile transactions, and execute audited actions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
