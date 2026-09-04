@@ -30,7 +30,7 @@ export const RiskIntelligence: React.FC = () => {
   const activeClusters = riskClusters.filter(r => r.status === 'active');
 
   return (
-    <div className="space-y-6 pb-8">
+    <div className="mercury-module mercury-risk space-y-6 pb-8">
       
       {/* Header */}
       <div className="space-y-4">

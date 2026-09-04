@@ -53,7 +53,7 @@ export const MercuryCopilot: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-7.5rem)] space-y-4 pb-1">
+    <div className="mercury-module mercury-copilot flex h-[calc(100vh-7.5rem)] flex-col space-y-4 pb-1">
       
       {/* Header */}
       <div className="space-y-3">

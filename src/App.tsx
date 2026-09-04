@@ -15,9 +15,12 @@ import { GrowthIntelligence } from './components/growth/GrowthIntelligence';
 import { MercuryCopilot } from './components/copilot/MercuryCopilot';
 import { AuditTrail } from './components/audit/AuditTrail';
 
+export type MercuryTheme = 'sage' | 'deep-space' | 'titanium' | 'scrip' | 'obsidian';
+
 const MainLayout: React.FC = () => {
   const { activeModule, pendingAction, setPendingAction } = useMerchant();
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
+  const [theme, setTheme] = useState<MercuryTheme>('sage');
 
   const renderActiveModule = () => {
     switch (activeModule) {
@@ -43,18 +46,22 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-full bg-white font-sans overflow-hidden text-slate-900 antialiased selection:bg-blue-100 selection:text-slate-900">
+    <div className={`mercury-app theme-${theme} flex h-screen w-full overflow-hidden font-sans antialiased selection:bg-lime-200 selection:text-slate-900`}>
       {/* Left Sidebar Navigation */}
       <Sidebar />
 
       {/* Main Column */}
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden bg-slate-50">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-[#f4f6f2]">
         {/* Top Navigation Bar */}
-        <Navbar onOpenSimulator={() => setIsSimulatorOpen(true)} />
+        <Navbar
+          onOpenSimulator={() => setIsSimulatorOpen(true)}
+          theme={theme}
+          onThemeChange={setTheme}
+        />
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto bg-slate-50">
-          <div className="mx-auto max-w-7xl px-6 py-8">
+        <main className="flex-1 overflow-y-auto bg-[#f4f6f2]">
+          <div className="mx-auto max-w-[1480px] px-4 py-5 sm:px-6 sm:py-7 lg:px-8">
             {renderActiveModule()}
           </div>
         </main>

@@ -40,10 +40,10 @@ export const OverviewDashboard: React.FC = () => {
   const openExceptionsCount = reconciliationExceptions.filter(e => e.status === 'open').length;
 
   return (
-    <div className="space-y-4 pb-8">
+    <div className="mercury-dashboard space-y-4 pb-8">
       
       {/* Top Banner: High Density Executive Briefing Terminal */}
-      <div className="rounded bg-slate-900 border border-slate-800 p-4 text-slate-100 shadow-xs">
+      <div className="mercury-briefing rounded-2xl border border-slate-800 bg-slate-900 p-4 text-slate-100 shadow-xl shadow-slate-900/10 sm:p-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div className="flex items-start space-x-3">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">

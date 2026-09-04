@@ -9,15 +9,19 @@ import {
   AlertTriangle, 
   Zap,
   Sliders,
-  ExternalLink
+  ExternalLink,
+  Palette
 } from 'lucide-react';
 import { useMerchant } from '../../context/MerchantContext';
+import type { MercuryTheme } from '../../App';
 
 interface NavbarProps {
   onOpenSimulator: () => void;
+  theme: MercuryTheme;
+  onThemeChange: (theme: MercuryTheme) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator, theme, onThemeChange }) => {
   const { 
     profile, 
     setProfile, 
@@ -30,6 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator }) => {
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMerchantMenu, setShowMerchantMenu] = useState(false);
+  const [showThemeMenu, setShowThemeMenu] = useState(false);
 
   const activeAlerts = alerts.filter(a => a.status === 'active');
 
@@ -41,22 +46,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator }) => {
   };
 
   return (
-    <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0 z-30 shadow-sm">
+    <header className="z-30 flex min-h-[84px] shrink-0 items-center justify-between border-b border-[#dde4df] bg-[#fdfefd]/90 px-4 shadow-sm backdrop-blur-xl sm:px-7">
       {/* Left: Logo & Branding */}
-      <div className="flex items-center space-x-5">
+      <div className="flex min-w-0 items-center gap-4 sm:gap-6">
         <div>
-          <h1 className="text-[20px] font-bold leading-6 text-slate-700">Merchant<br />Command Center</h1>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0d766d]">Merchant OS</p>
+          <h1 className="text-lg font-bold leading-5 tracking-tight text-[#172033] sm:text-xl">Command Center</h1>
         </div>
 
         {/* Merchant Store Selector */}
-        <span className="hidden xl:inline-flex rounded-md bg-indigo-50 px-3 py-2 text-sm font-bold text-indigo-600">V1.0.4 – MVP</span>
+        <span className="hidden rounded-full border border-[#cde8a2] bg-[#f1f9df] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#527b1b] xl:inline-flex">MVP / v1.0.4</span>
         <div className="relative hidden lg:block">
           <button 
             id="merchant-selector-btn"
             onClick={() => setShowMerchantMenu(!showMerchantMenu)}
-            className="flex min-w-[300px] items-center justify-between space-x-2 rounded-md border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-700 hover:bg-white transition-colors"
+            className="flex min-w-[270px] items-center justify-between gap-2 rounded-xl border border-[#dde4df] bg-white/70 px-3.5 py-2.5 text-sm text-slate-700 shadow-sm hover:bg-white"
           >
-            <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+            <div className="h-2 w-2 rounded-full bg-[#0d766d] shadow-[0_0_0_4px_rgba(13,118,109,0.12)]"></div>
             <span className="font-medium max-w-[160px] truncate">{profile.name}</span>
             <ChevronDown className="h-4 w-4 text-slate-400" />
           </button>
@@ -77,9 +83,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator }) => {
       </div>
 
       {/* Right: Controls & Actions */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center gap-2 sm:gap-3">
         {/* Timeframe Filter */}
-        <div className="hidden 2xl:flex items-center rounded-lg bg-slate-100 p-1 text-xs gap-1">
+        <div className="hidden items-center gap-1 rounded-xl border border-[#dde4df] bg-white/60 p-1 text-xs 2xl:flex">
           {(['today', 'yesterday', '7d', '30d'] as const).map((tf) => (
             <button
               key={tf}
@@ -87,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator }) => {
               onClick={() => setSelectedTimeframe(tf)}
               className={`rounded-md px-3 py-1.5 font-medium transition-all ${
                 selectedTimeframe === tf
-                  ? 'bg-white text-slate-900 font-semibold shadow-sm'
+                    ? 'bg-[#172033] text-white font-semibold shadow-sm'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -100,10 +106,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator }) => {
         <button
           id="toggle-environment-btn"
           onClick={toggleEnvironment}
-          className={`flex min-h-[48px] items-center space-x-2 rounded-md border px-4 py-2 text-sm font-semibold transition-all ${
+          className={`flex min-h-[42px] items-center gap-2 rounded-xl border px-3 py-2 text-xs font-bold transition-all ${
             profile.environment === 'test'
-              ? 'border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100'
-              : 'border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+              ? 'border-[#f4c95d] bg-[#fff8df] text-[#98720c] hover:bg-[#fff2c2]'
+              : 'border-[#bfe3b5] bg-[#edf9e9] text-[#36733b] hover:bg-[#e2f5dd]'
           }`}
         >
           <Radio className="h-3.5 w-3.5" />
@@ -114,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator }) => {
         <button
           id="open-webhook-simulator-btn"
           onClick={onOpenSimulator}
-          className="flex min-h-[48px] items-center space-x-2 rounded-md border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-4 py-2 text-sm font-semibold transition-colors"
+          className="flex min-h-[42px] items-center gap-2 rounded-xl border border-[#b8ddd8] bg-[#eaf7f5] px-3 py-2 text-xs font-bold text-[#0d766d] hover:bg-[#dff1ee]"
         >
           <Zap className="h-3.5 w-3.5" />
           <span className="hidden md:inline">Simulate</span>
@@ -125,7 +131,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator }) => {
           <button
             id="notifications-bell-btn"
             onClick={() => setShowNotifications(!showNotifications)}
-            className="flex h-12 w-12 items-center justify-center rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors relative"
+            className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-[#dde4df] bg-white/70 text-slate-600 shadow-sm hover:bg-white"
           >
             <Bell className="h-4 w-4" />
             {activeAlerts.length > 0 && (
@@ -185,18 +191,86 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSimulator }) => {
         <button
           id="nav-copilot-shortcut-btn"
           onClick={() => setActiveModule('copilot')}
-          className={`hidden xl:flex min-h-[48px] items-center space-x-2 rounded-md px-4 py-2 text-sm font-semibold transition-all ${
+          className={`hidden min-h-[42px] items-center gap-2 rounded-xl px-3 py-2 text-xs font-bold transition-all xl:flex ${
             activeModule === 'copilot'
-              ? 'bg-slate-900 text-white'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              ? 'bg-[#172033] text-white'
+              : 'border border-[#dde4df] bg-white/70 text-slate-700 hover:bg-white'
           }`}
         >
           <Sparkles className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">AI</span>
         </button>
 
+        {/* Theme control */}
+        <div className="relative">
+          <button
+            id="theme-selector-btn"
+            aria-label={`${theme} theme`}
+            title={`${theme} theme`}
+            onClick={() => setShowThemeMenu(!showThemeMenu)}
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#cde8a2] bg-[#f1f9df] text-[#527b1b] shadow-sm hover:bg-[#e5f5c7]"
+          >
+            <Palette className="h-4 w-4" />
+          </button>
+
+          {showThemeMenu && (
+              <div className="absolute right-0 mt-2 w-48 rounded-xl border border-[#dde4df] bg-white p-2 shadow-xl">
+                <button
+                  onClick={() => {
+                    onThemeChange('sage');
+                    setShowThemeMenu(false);
+                  }}
+                  className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-bold ${theme === 'sage' ? 'bg-[#f1f9df] text-[#527b1b]' : 'text-slate-600 hover:bg-slate-50'}`}
+                >
+                  <span>Sage</span>
+                  <span className="h-2 w-2 rounded-full bg-[#0d766d]" />
+                </button>
+                <button
+                  onClick={() => {
+                    onThemeChange('deep-space');
+                    setShowThemeMenu(false);
+                  }}
+                  className={`mt-1 flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-bold ${theme === 'deep-space' ? 'bg-[#111a31] text-[#42e8ff]' : 'text-slate-600 hover:bg-slate-50'}`}
+                >
+                  <span>Deep Space</span>
+                  <span className="h-2 w-2 rounded-full bg-[#42e8ff]" />
+                </button>
+                <button
+                  onClick={() => {
+                    onThemeChange('titanium');
+                    setShowThemeMenu(false);
+                  }}
+                  className={`mt-1 flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-bold ${theme === 'titanium' ? 'bg-[#eef2f8] text-[#315bff]' : 'text-slate-600 hover:bg-slate-50'}`}
+                >
+                  <span>MERCURY TITANIUM</span>
+                  <span className="h-2 w-2 rounded-full bg-[#315bff]" />
+                </button>
+                <button
+                  onClick={() => {
+                    onThemeChange('scrip');
+                    setShowThemeMenu(false);
+                  }}
+                  className={`mt-1 flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-bold ${theme === 'scrip' ? 'bg-[#111614] text-[#39b982]' : 'text-slate-600 hover:bg-slate-50'}`}
+                >
+                  <span>SCRIP</span>
+                  <span className="h-2 w-2 rounded-full bg-[#39b982]" />
+                </button>
+                <button
+                  onClick={() => {
+                    onThemeChange('obsidian');
+                    setShowThemeMenu(false);
+                  }}
+                  className={`mt-1 flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-bold ${theme === 'obsidian' ? 'bg-[#1d2024] text-[#f2f3f1]' : 'text-slate-600 hover:bg-slate-50'}`}
+                >
+                  <span>OBSIDIAN</span>
+                  <span className="h-2 w-2 rounded-full bg-[#6c9fe8]" />
+                </button>
+            </div>
+          )}
+        </div>
+
         {/* User Avatar */}
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-violet-600 flex items-center justify-center text-xs font-bold text-white hover:shadow-md transition-shadow cursor-pointer">
+        <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-[#172033] text-xs font-bold text-[#b7e36c] shadow-lg shadow-slate-900/10 transition-shadow hover:shadow-xl">
           M
         </div>
       </div>

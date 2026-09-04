@@ -8,7 +8,6 @@ import {
   Rocket,
   Bot,
   ScrollText,
-  CheckCircle2,
   Lock,
   ArrowUpRight
 } from 'lucide-react';
@@ -104,20 +103,19 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <nav className="w-56 bg-white flex flex-col shrink-0 border-r border-slate-100 select-none z-20">
+    <nav className="flex w-16 shrink-0 select-none flex-col border-r border-slate-800 bg-[#172033] text-white shadow-2xl shadow-slate-900/10 md:w-64">
       {/* Brand Header */}
-      <div className="px-5 py-6 border-b border-slate-100">
-        <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center">
-            <CheckCircle2 className="w-4 h-4 text-white" />
+      <div className="border-b border-white/10 px-2 py-5 md:px-5 md:py-6">
+        <div className="flex items-center">
+          <div className="hidden min-w-0 md:block">
+            <h2 className="mercury-brand-name text-[1.08rem] font-medium uppercase leading-none tracking-[0.28em] text-white">MERCURY</h2>
+            <p className="mercury-brand-subtitle mt-1.5 whitespace-nowrap text-[8px] font-medium uppercase leading-none tracking-[0.27em] text-slate-400">Merchant Currency</p>
           </div>
-          <h2 className="text-base font-semibold text-slate-900">Mercury</h2>
         </div>
-        <p className="text-xs text-slate-500 mt-2">Merchant Intelligence</p>
       </div>
 
       {/* Nav Items */}
-      <div className="flex-1 py-3 flex flex-col space-y-1 overflow-y-auto px-3">
+      <div className="flex flex-1 flex-col space-y-1 overflow-y-auto px-2 py-5 md:px-3">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeModule === item.id;
@@ -127,19 +125,20 @@ export const Sidebar: React.FC = () => {
               key={item.id}
               id={`nav-item-${item.id}`}
               onClick={() => setActiveModule(item.id)}
-              className={`px-3 py-2.5 flex items-center justify-between cursor-pointer rounded-lg transition-all ${
+              title={item.label}
+              className={`group flex cursor-pointer items-center justify-between rounded-xl px-2 py-3 transition-all md:px-3 ${
                 isActive
-                  ? 'bg-blue-50 text-blue-700 font-medium'
-                  : 'text-slate-700 hover:bg-slate-50'
+                  ? 'bg-white text-[#172033] shadow-lg shadow-black/10'
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
               }`}
             >
-              <div className="flex items-center space-x-3 truncate min-w-0">
-                <Icon className={`w-4 h-4 shrink-0 ${
-                  isActive ? 'text-blue-600' : 'text-slate-400'
+              <div className="flex min-w-0 items-center justify-center space-x-3 truncate md:justify-start">
+                <Icon className={`h-4 w-4 shrink-0 ${
+                  isActive ? 'text-[#0d766d]' : 'text-slate-500 group-hover:text-[#b7e36c]'
                 }`} />
-                <div className="truncate min-w-0">
-                  <p className="text-sm font-medium truncate">{item.label}</p>
-                  <p className="text-[11px] text-slate-500 truncate">{item.sublabel}</p>
+                <div className="hidden min-w-0 truncate md:block">
+                  <p className="truncate text-sm font-medium">{item.label}</p>
+                  <p className={`truncate text-[11px] ${isActive ? 'text-slate-500' : 'text-slate-500'}`}>{item.sublabel}</p>
                 </div>
               </div>
 
@@ -163,11 +162,11 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Footer Status */}
-      <div className="p-4 bg-slate-50 text-xs text-slate-600 border-t border-slate-100 space-y-2">
+      <div className="hidden space-y-3 border-t border-white/10 bg-black/10 p-4 text-xs text-slate-300 md:block">
         <div className="flex items-center justify-between">
           <span>Environment</span>
-          <span className={`font-medium capitalize ${
-            profile.environment === 'test' ? 'text-amber-600' : 'text-emerald-600'
+            <span className={`font-semibold capitalize ${
+            profile.environment === 'test' ? 'text-[#f4c95d]' : 'text-[#b7e36c]'
           }`}>
             {profile.environment}
           </span>
@@ -175,8 +174,8 @@ export const Sidebar: React.FC = () => {
         <div className="flex items-center justify-between">
           <span>Status</span>
           <div className="flex items-center space-x-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-emerald-700 font-medium">Live</span>
+            <span className="h-2 w-2 animate-pulse rounded-full bg-[#b7e36c]"></span>
+            <span className="font-medium text-[#b7e36c]">Live</span>
           </div>
         </div>
       </div>

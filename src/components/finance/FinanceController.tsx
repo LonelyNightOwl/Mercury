@@ -49,7 +49,7 @@ export const FinanceController: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 pb-8">
+    <div className="mercury-module mercury-finance space-y-6 pb-8">
       
       {/* Header */}
       <div className="space-y-4">

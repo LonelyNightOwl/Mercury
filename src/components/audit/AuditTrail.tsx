@@ -39,7 +39,7 @@ export const AuditTrail: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 pb-8">
+    <div className="mercury-module mercury-audit space-y-6 pb-8">
       
       {/* Header */}
       <div className="space-y-4">
