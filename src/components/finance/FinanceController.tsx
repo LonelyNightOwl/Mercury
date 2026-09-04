@@ -49,65 +49,54 @@ export const FinanceController: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4 pb-8">
+    <div className="space-y-6 pb-8">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded border border-slate-200 shadow-xs">
+      <div className="space-y-4">
         <div>
-          <div className="flex items-center space-x-2">
-            <h1 className="text-sm font-bold text-slate-900 tracking-tight">Finance & Reconciliation Controller</h1>
-            <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[9px] font-bold text-blue-700 uppercase font-mono border border-blue-100">
-              4-Way Matching Engine
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Automated reconciliation across Orders, Payments, Refunds, and Bank Settlements. Resolve exceptions deterministically.
-          </p>
+          <h1 className="text-2xl font-semibold text-slate-900">Finance & Reconciliation</h1>
+          <p className="text-sm text-slate-600 mt-1">Automate reconciliation and resolve payment discrepancies</p>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <div className="rounded border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-600 flex items-center space-x-2 font-mono">
-            <Coins className="h-4 w-4 text-indigo-600" />
-            <span>Reconciled Rate: <strong className="text-emerald-600">{metrics.reconciliationRate}%</strong></span>
-          </div>
+        <div className="flex items-center gap-2 text-sm">
+          <Coins className="h-4 w-4 text-blue-600" />
+          <span className="text-slate-600">Reconciled Rate: <strong className="text-emerald-700">{metrics.reconciliationRate}%</strong></span>
         </div>
       </div>
 
       {/* 4-Way Matching Matrix Overview */}
-      <div className="rounded border border-slate-200 bg-white p-4 space-y-3 shadow-xs">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-tight">
-            Automated 4-Way Ledger Reconciliation Matrix
-          </h3>
-          <span className="text-xs text-emerald-600 font-bold flex items-center space-x-1">
+          <h3 className="text-sm font-semibold text-slate-900">Reconciliation Matrix</h3>
+          <span className="text-xs font-semibold text-emerald-600 flex items-center gap-1">
             <CheckCircle2 className="h-3.5 w-3.5" />
-            <span>98.2% Total Match</span>
+            98.2% Match
           </span>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 text-xs">
-          <div className="rounded border border-slate-200 bg-slate-50 p-2.5 space-y-0.5">
-            <span className="text-[10px] text-slate-500 font-semibold uppercase">1. Order Subsystem</span>
-            <div className="font-mono text-sm font-bold text-slate-900">₹1,48,24,500</div>
-            <div className="text-[10px] text-slate-400 font-mono">4,280 Orders in OMS</div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <span className="text-xs font-medium text-slate-600">Orders</span>
+            <div className="font-semibold text-slate-900 mt-1">₹1,48,24,500</div>
+            <div className="text-xs text-slate-600 mt-1">4,280 orders</div>
           </div>
 
-          <div className="rounded border border-slate-200 bg-slate-50 p-2.5 space-y-0.5">
-            <span className="text-[10px] text-slate-500 font-semibold uppercase">2. Gateway Charges</span>
-            <div className="font-mono text-sm font-bold text-slate-900">₹1,48,01,100</div>
-            <div className="text-[10px] text-slate-400 font-mono">3,621 Captured</div>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <span className="text-xs font-medium text-slate-600">Payments</span>
+            <div className="font-semibold text-slate-900 mt-1">₹1,48,01,100</div>
+            <div className="text-xs text-slate-600 mt-1">3,621 captured</div>
           </div>
 
-          <div className="rounded border border-slate-200 bg-slate-50 p-2.5 space-y-0.5">
-            <span className="text-[10px] text-slate-500 font-semibold uppercase">3. Refunds & Disputes</span>
-            <div className="font-mono text-sm font-bold text-amber-600">₹1,12,400</div>
-            <div className="text-[10px] text-slate-400 font-mono">18 Processed / 3 Disputes</div>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <span className="text-xs font-medium text-slate-600">Refunds</span>
+            <div className="font-semibold text-amber-600 mt-1">₹1,12,400</div>
+            <div className="text-xs text-slate-600 mt-1">18 processed</div>
           </div>
 
-          <div className="rounded border border-slate-200 bg-slate-50 p-2.5 space-y-0.5">
-            <span className="text-[10px] text-slate-500 font-semibold uppercase">4. Bank Settlement Payout</span>
-            <div className="font-mono text-sm font-bold text-emerald-600">₹1,44,77,289</div>
-            <div className="text-[10px] text-slate-400 font-mono">UTR Matched in HDFC/Axis</div>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <span className="text-xs font-medium text-slate-600">Settlement</span>
+            <div className="font-semibold text-emerald-600 mt-1">₹1,44,77,289</div>
+            <div className="text-xs text-slate-600 mt-1">Matched</div>
           </div>
         </div>
       </div>

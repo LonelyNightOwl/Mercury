@@ -70,25 +70,18 @@ export const RevenueIntelligence: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-4 pb-8">
+    <div className="space-y-6 pb-8">
       
-      {/* Top Header & Timeframe Selection */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded border border-slate-200 shadow-xs">
+      {/* Header */}
+      <div className="space-y-4">
         <div>
-          <div className="flex items-center space-x-2">
-            <h1 className="text-sm font-bold text-slate-900 tracking-tight">Revenue Intelligence</h1>
-            <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-[9px] font-bold text-indigo-700 uppercase font-mono border border-indigo-100">
-              Real-Time Telemetry
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Monitor revenue trends, detect unusual drops, analyze payment gateway success rates, and identify root causes.
-          </p>
+          <h1 className="text-2xl font-semibold text-slate-900">Revenue Intelligence</h1>
+          <p className="text-sm text-slate-600 mt-1">Monitor payment trends and identify revenue drop causes</p>
         </div>
 
-        {/* Timeframe & Filter controls */}
-        <div className="flex items-center space-x-2">
-          <div className="flex items-center rounded border border-slate-200 bg-slate-50 p-0.5 text-xs">
+        {/* Timeframe Filter */}
+        <div className="flex items-center gap-2">
+          <div className="flex items-center rounded-lg bg-slate-100 p-1 gap-1 text-xs">
             {(['today', 'yesterday', '7d', '30d'] as const).map((tf) => (
               <button
                 key={tf}

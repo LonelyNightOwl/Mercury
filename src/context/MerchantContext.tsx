@@ -10,7 +10,9 @@ import {
   GrowthOpportunity,
   AuditLogEntry,
   Transaction,
-  ActionProposal
+  ActionProposal,
+  CopilotMessage,
+  CopilotSpecialist
 } from '../types';
 import {
   INITIAL_MERCHANT_PROFILE,
@@ -37,6 +39,9 @@ interface MerchantContextType {
   growthOpportunities: GrowthOpportunity[];
   auditLogs: AuditLogEntry[];
   transactions: Transaction[];
+  copilotMessages: CopilotMessage[];
+  isCopilotThinking: boolean;
+  sendCopilotQuery: (query: string, specialist?: CopilotSpecialist) => Promise<void>;
   
   // Guardrail Action Workflow
   pendingAction: ActionProposal | null;
@@ -67,6 +72,16 @@ export const MerchantProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>(INITIAL_AUDIT_LOGS);
   const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS);
   const [selectedTimeframe, setSelectedTimeframe] = useState<'today' | 'yesterday' | '7d' | '30d'>('today');
+  const [copilotMessages, setCopilotMessages] = useState<CopilotMessage[]>([
+    {
+      id: 'copilot-welcome',
+      sender: 'mercury',
+      timestamp: 'Now',
+      content: 'Hello! I can analyze your revenue, failed payments, risk clusters, reconciliation gaps, and growth opportunities in real time.',
+      specialistRoute: 'general'
+    }
+  ]);
+  const [isCopilotThinking, setIsCopilotThinking] = useState<boolean>(false);
 
   const [pendingAction, setPendingAction] = useState<ActionProposal | null>(null);
   const [isExecutingAction, setIsExecutingAction] = useState<boolean>(false);
@@ -106,6 +121,84 @@ export const MerchantProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const dismissAlert = (alertId: string) => {
     setAlerts(prev => prev.filter(a => a.id !== alertId));
+  };
+
+  const sendCopilotQuery = async (query: string, specialist?: CopilotSpecialist): Promise<void> => {
+    const text = query.trim();
+    if (!text) {
+      return;
+    }
+
+    const trimmedSpecialist = specialist && specialist !== 'all' ? specialist : undefined;
+
+    const userMessage: CopilotMessage = {
+      id: `copilot-user-${Date.now()}`,
+      sender: 'user',
+      timestamp: new Date().toLocaleTimeString('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      }) + ' IST',
+      content: text,
+      specialistRoute: trimmedSpecialist as CopilotMessage['specialistRoute']
+    };
+
+    setCopilotMessages(prev => [...prev, userMessage]);
+    setIsCopilotThinking(true);
+
+    try {
+      const response = await fetch('/api/copilot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: text,
+          contextSnapshot: {
+            module: activeModule,
+            specialist: trimmedSpecialist,
+            profile,
+            metrics,
+            alerts: alerts.slice(0, 5),
+            recoveryItems: recoveryItems.slice(0, 4),
+            riskClusters: riskClusters.slice(0, 3),
+            reconciliationExceptions: reconciliationExceptions.slice(0, 4),
+            growthOpportunities: growthOpportunities.slice(0, 2)
+          }
+        })
+      });
+
+      const data = await response.json();
+      const assistantContent = typeof data?.content === 'string' ? data.content : 'I analyzed your merchant telemetry and can help narrow the issue.';
+
+      const assistantMessage: CopilotMessage = {
+        id: `copilot-mercury-${Date.now()}`,
+        sender: 'mercury',
+        timestamp: new Date().toLocaleTimeString('en-IN', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        }) + ' IST',
+        content: assistantContent,
+        specialistRoute: trimmedSpecialist as CopilotMessage['specialistRoute']
+      };
+
+      setCopilotMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      const fallback = `I hit a temporary issue while analyzing your request. Based on the current merchant telemetry, the most likely focus is ${activeModule === 'overview' ? 'revenue health and recovery opportunities' : activeModule}.`;
+
+      setCopilotMessages(prev => [...prev, {
+        id: `copilot-error-${Date.now()}`,
+        sender: 'mercury',
+        timestamp: 'Now',
+        content: fallback,
+        specialistRoute: trimmedSpecialist as CopilotMessage['specialistRoute']
+      }]);
+    } finally {
+      setIsCopilotThinking(false);
+    }
   };
 
   // Deterministic Guardrail Execution Engine
@@ -389,6 +482,9 @@ export const MerchantProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         growthOpportunities,
         auditLogs,
         transactions,
+        copilotMessages,
+        isCopilotThinking,
+        sendCopilotQuery,
         pendingAction,
         setPendingAction,
         isExecutingAction,

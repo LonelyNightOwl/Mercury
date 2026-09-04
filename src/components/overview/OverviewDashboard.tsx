@@ -63,7 +63,6 @@ export const OverviewDashboard: React.FC = () => {
               </p>
             </div>
           </div>
-
           <div className="flex shrink-0 items-center space-x-2">
             <button
               id="overview-ask-copilot-btn"
@@ -77,88 +76,26 @@ export const OverviewDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* 8 High Density Fintech Metric Cards Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        
-        {/* Metric 1: Total Revenue */}
-        <div 
-          onClick={() => setActiveModule('revenue')}
-          className="bg-white p-3 rounded border border-slate-200 shadow-xs border-l-4 border-l-slate-800 hover:border-slate-300 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold tracking-tight">
-            <span>Total Revenue</span>
-            <TrendingUp className="h-3.5 w-3.5 text-slate-400" />
-          </div>
-          <div className="mt-1 font-mono text-lg font-bold text-slate-900 tracking-tight">
-            {formatCurrency(metrics.totalRevenue)}
-          </div>
-          <div className="mt-1 flex items-center space-x-1 text-[10px]">
-            <span className="flex items-center text-rose-600 font-semibold font-mono">
-              <TrendingDown className="h-2.5 w-2.5 mr-0.5 inline" />
-              {metrics.totalRevenueDelta}%
-            </span>
-            <span className="text-slate-400">vs yesterday norm</span>
-          </div>
+        <div onClick={() => setActiveModule('revenue')} className="bg-white p-3 rounded border border-slate-200 shadow-xs border-l-4 border-l-slate-800 hover:border-slate-300 transition-all cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold tracking-tight"><span>Total Revenue</span><TrendingUp className="h-3.5 w-3.5 text-slate-400" /></div>
+          <div className="mt-1 font-mono text-lg font-bold text-slate-900 tracking-tight">{formatCurrency(metrics.totalRevenue)}</div>
+          <div className="mt-1 flex items-center space-x-1 text-[10px]"><span className="flex items-center text-rose-600 font-semibold font-mono"><TrendingDown className="h-2.5 w-2.5 mr-0.5 inline" />{metrics.totalRevenueDelta}%</span><span className="text-slate-400">vs yesterday norm</span></div>
         </div>
-
-        {/* Metric 2: Revenue at Risk */}
-        <div 
-          onClick={() => setActiveModule('recovery')}
-          className="bg-white p-3 rounded border border-slate-200 shadow-xs border-l-4 border-l-rose-500 hover:border-slate-300 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold tracking-tight">
-            <span>Revenue at Risk</span>
-            <AlertTriangle className="h-3.5 w-3.5 text-rose-500" />
-          </div>
-          <div className="mt-1 font-mono text-lg font-bold text-rose-600 tracking-tight">
-            {formatCurrency(metrics.revenueAtRisk)}
-          </div>
-          <div className="mt-1 flex items-center space-x-1 text-[10px]">
-            <span className="text-rose-600 font-semibold font-mono">
-              {recoverableCount} payments
-            </span>
-            <span className="text-slate-400">recoverable now</span>
-          </div>
+        <div onClick={() => setActiveModule('recovery')} className="bg-white p-3 rounded border border-slate-200 shadow-xs border-l-4 border-l-rose-500 hover:border-slate-300 transition-all cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold tracking-tight"><span>Revenue at Risk</span><AlertTriangle className="h-3.5 w-3.5 text-rose-500" /></div>
+          <div className="mt-1 font-mono text-lg font-bold text-rose-600 tracking-tight">{formatCurrency(metrics.revenueAtRisk)}</div>
+          <div className="mt-1 flex items-center space-x-1 text-[10px]"><span className="text-rose-600 font-semibold font-mono">{recoverableCount} payments</span><span className="text-slate-400">recoverable now</span></div>
         </div>
-
-        {/* Metric 3: Revenue Recovered */}
-        <div 
-          onClick={() => setActiveModule('recovery')}
-          className="bg-white p-3 rounded border border-slate-200 shadow-xs border-l-4 border-l-emerald-500 hover:border-slate-300 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold tracking-tight">
-            <span>Revenue Recovered</span>
-            <RefreshCw className="h-3.5 w-3.5 text-emerald-500" />
-          </div>
-          <div className="mt-1 font-mono text-lg font-bold text-emerald-600 tracking-tight">
-            {formatCurrency(metrics.revenueRecovered)}
-          </div>
-          <div className="mt-1 flex items-center space-x-1 text-[10px]">
-            <span className="text-emerald-600 font-semibold font-mono">
-              +{metrics.revenueRecoveredDelta}%
-            </span>
-            <span className="text-slate-400">via Smart Retries</span>
-          </div>
+        <div onClick={() => setActiveModule('recovery')} className="bg-white p-3 rounded border border-slate-200 shadow-xs border-l-4 border-l-emerald-500 hover:border-slate-300 transition-all cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold tracking-tight"><span>Revenue Recovered</span><RefreshCw className="h-3.5 w-3.5 text-emerald-500" /></div>
+          <div className="mt-1 font-mono text-lg font-bold text-emerald-600 tracking-tight">{formatCurrency(metrics.revenueRecovered)}</div>
+          <div className="mt-1 flex items-center space-x-1 text-[10px]"><span className="text-emerald-600 font-semibold font-mono">+{metrics.revenueRecoveredDelta}%</span><span className="text-slate-400">via Smart Retries</span></div>
         </div>
-
-        {/* Metric 4: Payment Success Rate */}
-        <div 
-          onClick={() => setActiveModule('revenue')}
-          className="bg-white p-3 rounded border border-slate-200 shadow-xs border-l-4 border-l-indigo-500 hover:border-slate-300 transition-all cursor-pointer"
-        >
-          <div className="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold tracking-tight">
-            <span>Payment Success Rate</span>
-            <Activity className="h-3.5 w-3.5 text-indigo-500" />
-          </div>
-          <div className="mt-1 font-mono text-lg font-bold text-slate-900 tracking-tight">
-            {metrics.paymentSuccessRate}%
-          </div>
-          <div className="mt-1 flex items-center space-x-1 text-[10px]">
-            <span className="text-rose-600 font-semibold font-mono">
-              {metrics.successRateDelta}%
-            </span>
-            <span className="text-slate-400">Benchmark: 88.4%</span>
-          </div>
+        <div onClick={() => setActiveModule('revenue')} className="bg-white p-3 rounded border border-slate-200 shadow-xs border-l-4 border-l-indigo-500 hover:border-slate-300 transition-all cursor-pointer">
+          <div className="flex items-center justify-between text-slate-500 text-[10px] uppercase font-bold tracking-tight"><span>Payment Success Rate</span><Activity className="h-3.5 w-3.5 text-indigo-500" /></div>
+          <div className="mt-1 font-mono text-lg font-bold text-slate-900 tracking-tight">{metrics.paymentSuccessRate}%</div>
+          <div className="mt-1 flex items-center space-x-1 text-[10px]"><span className="text-rose-600 font-semibold font-mono">{metrics.successRateDelta}%</span><span className="text-slate-400">Benchmark: 88.4%</span></div>
         </div>
 
         {/* Metric 5: Reconciliation Rate */}

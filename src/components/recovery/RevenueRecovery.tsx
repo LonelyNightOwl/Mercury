@@ -63,20 +63,13 @@ export const RevenueRecovery: React.FC = () => {
   };
 
   return (
-    <div className="space-y-4 pb-8">
+    <div className="space-y-6 pb-8">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded border border-slate-200 shadow-xs">
+      <div className="space-y-4">
         <div>
-          <div className="flex items-center space-x-2">
-            <h1 className="text-sm font-bold text-slate-900 tracking-tight">Revenue Recovery Engine</h1>
-            <span className="rounded bg-emerald-50 px-1.5 py-0.5 text-[9px] font-bold text-emerald-700 uppercase font-mono border border-emerald-100">
-              AI Classifier Active
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Identify failed & abandoned payments, classify failure reasons, dispatch smart recovery links, and track recovered revenue.
-          </p>
+          <h1 className="text-2xl font-semibold text-slate-900">Revenue Recovery</h1>
+          <p className="text-sm text-slate-600 mt-1">Recover failed payments with smart retry logic and recovery links</p>
         </div>
 
         {/* Batch Recovery Trigger */}

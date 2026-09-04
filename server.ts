@@ -6,8 +6,22 @@ import { createServer as createViteServer } from 'vite';
 
 dotenv.config();
 
-const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
+export const app = express();
+
+export function validateStartupConfig(): string[] {
+  const warnings: string[] = [];
+
+  if (!Number.isInteger(PORT) || PORT <= 0 || PORT > 65535) {
+    warnings.push(`Invalid PORT value: ${process.env.PORT ?? '3000'}. Falling back to 3000.`);
+  }
+
+  if (!process.env.GEMINI_API_KEY) {
+    warnings.push('GEMINI_API_KEY is missing. AI responses will use the deterministic fallback engine.');
+  }
+
+  return warnings;
+}
 
 app.use(express.json());
 
@@ -32,6 +46,69 @@ function getGeminiClient(): GoogleGenAI | null {
   return aiClient;
 }
 
+export function stringifyError(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  if (typeof error === 'string') {
+    return error;
+  }
+
+  if (error && typeof error === 'object') {
+    const maybeError = error as { error?: { message?: string }; message?: string };
+    if (maybeError.error && typeof maybeError.error.message === 'string') {
+      return maybeError.error.message;
+    }
+    if (typeof maybeError.message === 'string') {
+      return maybeError.message;
+    }
+    try {
+      return JSON.stringify(error);
+    } catch {
+      return 'Unknown error';
+    }
+  }
+
+  return 'Unknown error';
+}
+
+export function withGeminiTimeout<T>(request: Promise<T>, timeoutMs: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error(`Gemini request timed out after ${timeoutMs}ms`));
+    }, timeoutMs);
+
+    request
+      .then((value) => {
+        clearTimeout(timer);
+        resolve(value);
+      })
+      .catch((error) => {
+        clearTimeout(timer);
+        reject(error);
+      });
+  });
+}
+
+async function callGeminiWithRetry<T>(action: () => Promise<T>, retries = 2): Promise<T> {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      return await withGeminiTimeout(action(), 15000);
+    } catch (error) {
+      lastError = error;
+      if (attempt >= retries) {
+        throw error;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
+    }
+  }
+
+  throw lastError ?? new Error('Gemini request failed');
+}
+
 // API Health Check
 app.get('/api/health', (req, res) => {
   res.json({
@@ -39,6 +116,7 @@ app.get('/api/health', (req, res) => {
     app: 'MERCURY - AI Merchant Intelligence & Action Platform',
     environment: process.env.NODE_ENV || 'development',
     hasGeminiKey: Boolean(process.env.GEMINI_API_KEY),
+    startupWarnings: validateStartupConfig(),
   });
 });
 
@@ -90,14 +168,16 @@ Respond in a clear, professional fintech voice with markdown formatting. Include
 4. **Actionable Guardrail Proposal** (State clearly what guardrail checks are applied)
 `;
 
-      const response = await client.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: `User Merchant Query: "${message}"\n\nCurrent UI Context: ${JSON.stringify(contextSnapshot || {})}`,
-        config: {
-          systemInstruction,
-          temperature: 0.2, // Low temperature for high precision fintech reasoning
-        },
-      });
+      const response = await callGeminiWithRetry(() =>
+        client.models.generateContent({
+          model: 'gemini-3.7-flash',
+          contents: `User Merchant Query: "${message}"\n\nCurrent UI Context: ${JSON.stringify(contextSnapshot || {})}`,
+          config: {
+            systemInstruction,
+            temperature: 0.2, // Low temperature for high precision fintech reasoning
+          },
+        }),
+      );
 
       const responseText = response.text || '';
       return res.json({
@@ -111,14 +191,15 @@ Respond in a clear, professional fintech voice with markdown formatting. Include
       content: generateDeterministicSpecialistResponse(message),
       source: 'deterministic-specialist-engine',
     });
-  } catch (error: any) {
-    console.error('Error processing MERCURY Copilot request:', error);
-    // Graceful fallback to deterministic engine
+  } catch (error: unknown) {
+    const upstreamError = stringifyError(error);
+    console.error('Error processing MERCURY Copilot request:', upstreamError);
+
     const { message } = req.body;
     return res.json({
       content: generateDeterministicSpecialistResponse(message || ''),
       source: 'deterministic-fallback',
-      errorNotice: error.message,
+      errorNotice: upstreamError,
     });
   }
 });
@@ -251,6 +332,12 @@ I have analyzed your live merchant telemetry across **Revenue, Recovery, Risk, F
 
 // Start Server and Mount Vite Middleware
 async function startServer() {
+  const startupWarnings = validateStartupConfig();
+  if (startupWarnings.length) {
+    console.warn('MERCURY startup warnings:');
+    startupWarnings.forEach((warning) => console.warn(`- ${warning}`));
+  }
+
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -265,9 +352,14 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`MERCURY Server running on http://localhost:${PORT}`);
+  return new Promise<void>((resolve) => {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`MERCURY Server running on http://localhost:${PORT}`);
+      resolve();
+    });
   });
 }
 
-startServer();
+if (process.argv[1] && process.argv[1].toLowerCase().endsWith('server.ts')) {
+  startServer();
+}

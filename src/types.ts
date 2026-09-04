@@ -235,6 +235,8 @@ export interface CopilotMessage {
   isStreaming?: boolean;
 }
 
+export type CopilotSpecialist = SpecialistType | 'all';
+
 export interface MerchantProfile {
   id: string;
   name: string;

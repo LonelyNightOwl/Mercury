@@ -104,22 +104,20 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <nav className="w-60 bg-slate-900 flex flex-col shrink-0 border-r border-slate-800 select-none z-20">
+    <nav className="w-56 bg-white flex flex-col shrink-0 border-r border-slate-100 select-none z-20">
       {/* Brand Header */}
-      <div className="p-5 border-b border-slate-800">
-        <div className="text-emerald-400 font-bold text-xl tracking-tighter flex items-center space-x-2">
-          <span>MERCURY</span>
-          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-800/60 font-semibold uppercase">
-            PRO
-          </span>
+      <div className="px-5 py-6 border-b border-slate-100">
+        <div className="flex items-center space-x-2">
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center">
+            <CheckCircle2 className="w-4 h-4 text-white" />
+          </div>
+          <h2 className="text-base font-semibold text-slate-900">Mercury</h2>
         </div>
-        <div className="text-[10px] text-slate-500 font-medium uppercase tracking-widest mt-1">
-          Intelligence Layer
-        </div>
+        <p className="text-xs text-slate-500 mt-2">Merchant Intelligence</p>
       </div>
 
       {/* Nav Items */}
-      <div className="flex-1 py-3 flex flex-col space-y-0.5 overflow-y-auto">
+      <div className="flex-1 py-3 flex flex-col space-y-1 overflow-y-auto px-3">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeModule === item.id;
@@ -129,30 +127,31 @@ export const Sidebar: React.FC = () => {
               key={item.id}
               id={`nav-item-${item.id}`}
               onClick={() => setActiveModule(item.id)}
-              className={`px-4 py-2 flex items-center justify-between cursor-pointer transition-colors ${
+              className={`px-3 py-2.5 flex items-center justify-between cursor-pointer rounded-lg transition-all ${
                 isActive
-                  ? 'bg-slate-800 text-white font-medium shadow-xs'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  ? 'bg-blue-50 text-blue-700 font-medium'
+                  : 'text-slate-700 hover:bg-slate-50'
               }`}
             >
-              <div className="flex items-center space-x-3 truncate">
-                {isActive ? (
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></div>
-                ) : (
-                  <Icon className="w-4 h-4 text-slate-400 shrink-0" />
-                )}
-                <span className="text-sm tracking-tight truncate">{item.label}</span>
+              <div className="flex items-center space-x-3 truncate min-w-0">
+                <Icon className={`w-4 h-4 shrink-0 ${
+                  isActive ? 'text-blue-600' : 'text-slate-400'
+                }`} />
+                <div className="truncate min-w-0">
+                  <p className="text-sm font-medium truncate">{item.label}</p>
+                  <p className="text-[11px] text-slate-500 truncate">{item.sublabel}</p>
+                </div>
               </div>
 
               {/* Badge */}
               {item.badgeCount !== undefined && item.badgeCount > 0 && (
                 <span
-                  className={`flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-bold ${
+                  className={`flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[10px] font-bold shrink-0 ml-2 ${
                     item.badgeVariant === 'danger'
-                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                      ? 'bg-rose-100 text-rose-700'
                       : item.badgeVariant === 'warning'
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                      : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                      ? 'bg-amber-100 text-amber-700'
+                      : 'bg-blue-100 text-blue-700'
                   }`}
                 >
                   {item.badgeCount}
@@ -163,22 +162,22 @@ export const Sidebar: React.FC = () => {
         })}
       </div>
 
-      {/* Bottom Status Block */}
-      <div className="p-4 bg-slate-950/60 text-[11px] text-slate-500 border-t border-slate-800 space-y-1.5">
-        <div className="flex justify-between items-center">
-          <span>API Mode</span>
-          <span className={`font-semibold capitalize ${
-            profile.environment === 'test' ? 'text-amber-400' : 'text-emerald-400'
+      {/* Footer Status */}
+      <div className="p-4 bg-slate-50 text-xs text-slate-600 border-t border-slate-100 space-y-2">
+        <div className="flex items-center justify-between">
+          <span>Environment</span>
+          <span className={`font-medium capitalize ${
+            profile.environment === 'test' ? 'text-amber-600' : 'text-emerald-600'
           }`}>
-            Razorpay {profile.environment}
+            {profile.environment}
           </span>
         </div>
-        <div className="flex justify-between items-center">
-          <span>Telemetry Status</span>
-          <span className="text-emerald-400 font-semibold flex items-center space-x-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Synced (Live)</span>
-          </span>
+        <div className="flex items-center justify-between">
+          <span>Status</span>
+          <div className="flex items-center space-x-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-emerald-700 font-medium">Live</span>
+          </div>
         </div>
       </div>
     </nav>

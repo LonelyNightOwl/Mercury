@@ -53,24 +53,17 @@ export const MercuryCopilot: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-7.5rem)] space-y-3 pb-1">
+    <div className="flex flex-col h-[calc(100vh-7.5rem)] space-y-4 pb-1">
       
-      {/* Copilot Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3 rounded border border-slate-200 shadow-xs">
-        <div className="flex items-center space-x-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-slate-900 text-white font-bold">
-            <Bot className="h-4 w-4" />
+      {/* Header */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white">
+            <Bot className="h-5 w-5" />
           </div>
           <div>
-            <div className="flex items-center space-x-2">
-              <h1 className="text-xs font-bold text-slate-900 tracking-tight">MERCURY Copilot</h1>
-              <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-indigo-700 border border-indigo-100">
-                Specialist AI Orchestrator
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-500">
-              Natural language intelligence across Revenue, Recovery, Risk, Finance, and Growth.
-            </p>
+            <h1 className="text-lg font-semibold text-slate-900">MERCURY Copilot</h1>
+            <p className="text-sm text-slate-600">AI-powered insights across all your merchant operations</p>
           </div>
         </div>
 

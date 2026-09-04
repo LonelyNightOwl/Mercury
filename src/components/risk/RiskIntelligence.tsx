@@ -30,60 +30,45 @@ export const RiskIntelligence: React.FC = () => {
   const activeClusters = riskClusters.filter(r => r.status === 'active');
 
   return (
-    <div className="space-y-4 pb-8">
+    <div className="space-y-6 pb-8">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded border border-slate-200 shadow-xs">
+      <div className="space-y-4">
         <div>
-          <div className="flex items-center space-x-2">
-            <h1 className="text-sm font-bold text-slate-900 tracking-tight">Risk Intelligence & Fraud Defense</h1>
-            <span className="rounded bg-rose-50 px-1.5 py-0.5 text-[9px] font-bold text-rose-700 uppercase font-mono border border-rose-100">
-              Heuristic & Velocity Engine
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Detect suspicious transaction clusters, mitigate card testing attacks, prevent refund abuse, and safeguard chargeback ratios.
-          </p>
+          <h1 className="text-2xl font-semibold text-slate-900">Risk & Fraud Defense</h1>
+          <p className="text-sm text-slate-600 mt-1">Detect fraud attacks and protect your merchants from chargebacks</p>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <div className="rounded border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-600 flex items-center space-x-2">
-            <ShieldCheck className="h-4 w-4 text-emerald-600" />
-            <span>Chargeback Ratio: <strong className="text-emerald-700 font-mono">0.08%</strong> (Safe &lt; 0.65%)</span>
-          </div>
+        <div className="flex items-center gap-2 text-sm">
+          <ShieldCheck className="h-4 w-4 text-emerald-600" />
+          <span className="text-slate-600">Chargeback Ratio: <strong className="text-emerald-700">0.08%</strong> (Safe)</span>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="bg-white rounded border border-slate-200 p-3 shadow-xs border-l-4 border-l-rose-600 space-y-0.5">
-          <span className="text-[10px] font-bold uppercase text-slate-500">Active Threat Clusters</span>
-          <div className="font-mono text-lg font-bold text-rose-600 tracking-tight">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm transition-all">
+          <span className="text-xs font-medium text-slate-600">Active Threat Clusters</span>
+          <div className="text-2xl font-semibold text-rose-600 mt-2">
             {activeClusters.length}
           </div>
-          <div className="text-[10px] text-slate-400">
-            1 Critical Card Testing Wave
-          </div>
+          <p className="text-xs text-slate-600 mt-2">1 Critical Card Testing Wave</p>
         </div>
 
-        <div className="bg-white rounded border border-slate-200 p-3 shadow-xs border-l-4 border-l-emerald-500 space-y-0.5">
-          <span className="text-[10px] font-bold uppercase text-slate-500">Total Fraud Exposure Prevented</span>
-          <div className="font-mono text-lg font-bold text-emerald-600 tracking-tight">
+        <div className="bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm transition-all">
+          <span className="text-xs font-medium text-slate-600">Fraud Prevented</span>
+          <div className="text-2xl font-semibold text-emerald-600 mt-2">
             ₹1,30,500
           </div>
-          <div className="text-[10px] text-emerald-600 font-mono">
-            +₹35,000 saved dispute fees
-          </div>
+          <p className="text-xs text-slate-600 mt-2">+₹35,000 saved in disputes</p>
         </div>
 
-        <div className="bg-white rounded border border-slate-200 p-3 shadow-xs border-l-4 border-l-indigo-500 space-y-0.5">
-          <span className="text-[10px] font-bold uppercase text-slate-500">Merchant Trust Index</span>
-          <div className="font-mono text-lg font-bold text-slate-900 tracking-tight">
+        <div className="bg-white rounded-xl border border-slate-200 p-4 hover:border-slate-300 hover:shadow-sm transition-all">
+          <span className="text-xs font-medium text-slate-600">Trust Index</span>
+          <div className="text-2xl font-semibold text-slate-900 mt-2">
             94.8 / 100
           </div>
-          <div className="text-[10px] text-slate-400">
-            Razorpay Risk Tier: <strong className="text-emerald-600">Low Risk Tier 1</strong>
-          </div>
+          <p className="text-xs text-emerald-600 mt-2">Low Risk Tier 1</p>
         </div>
       </div>
 

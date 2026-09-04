@@ -30,20 +30,13 @@ export const GrowthIntelligence: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-4 pb-8">
+    <div className="space-y-6 pb-8">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded border border-slate-200 shadow-xs">
+      <div className="space-y-4">
         <div>
-          <div className="flex items-center space-x-2">
-            <h1 className="text-sm font-bold text-slate-900 tracking-tight">Growth Intelligence & Conversion AI</h1>
-            <span className="rounded bg-indigo-50 px-1.5 py-0.5 text-[9px] font-bold text-indigo-700 uppercase font-mono border border-indigo-100">
-              Checkout Optimization
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Analyze checkout funnel drop-offs, benchmark payment methods, and deploy 1-click conversion lift playbooks.
-          </p>
+          <h1 className="text-2xl font-semibold text-slate-900">Growth Intelligence</h1>
+          <p className="text-sm text-slate-600 mt-1">Optimize your checkout funnel and increase conversion rates</p>
         </div>
 
         <div className="flex items-center space-x-2">
